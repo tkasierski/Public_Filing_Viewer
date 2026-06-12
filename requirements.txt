@@ -3,3 +3,5 @@ text
 streamlit
 pandas
 requests
+yfinance
+xlsxwriter
