@@ -87,8 +87,14 @@ if ticker:
             # 4. Multi-Form Visibility Configuration
             st.markdown("### 📋 Filter Disclosure Sources")
             available_forms = df_history['form'].unique().tolist()
-            selected_forms = st.multiselect("Select filing variants to include:", available_forms, default=["10-K", "10-Q", "8-K"])
-            
+
+            # FIX: This dynamically picks defaults only if they actually exist in the data
+            default_forms = [f for f in ["10-K", "10-Q", "8-K"] if f in available_forms]
+            if not default_forms and available_forms:
+                default_forms = [available_forms[0]] # Fallback to first available if none match
+
+            selected_forms = st.multiselect("Select filing variants to include:", available_forms, default=default_forms)
+
             # Clean and isolate data based on selections
             df_filtered = df_history[df_history['form'].isin(selected_forms)].copy()
             
